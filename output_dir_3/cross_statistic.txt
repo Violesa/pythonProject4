@@ -1,5 +1,35 @@
-[array([[0.60997823, 0.93386627, 0.85503667, 0.77192225, 0.58319786],
-       [0.58512337, 0.89802162, 0.82186316, 0.7415725 , 0.50088183],
-       [0.61179245, 0.94004294, 0.86017468, 0.7759177 , 0.59750873],
-       [0.67140784, 0.89616977, 0.8414873 , 0.7837888 , 0.56894353],
-       [0.56008708, 0.935097  , 0.84381503, 0.74759204, 0.54542266]])]
+fold0
+Best parameters for SVC found: {'svc__C': 1, 'svc__gamma': 'scale', 'svc__kernel': 'rbf'}
+Best parameters for dtree found: {'criterion': 'entropy'}
+fold1
+Best parameters for SVC found: {'svc__C': 1, 'svc__gamma': 'scale', 'svc__kernel': 'rbf'}
+Best parameters for dtree found: {'criterion': 'entropy'}
+fold2
+Best parameters for SVC found: {'svc__C': 1, 'svc__gamma': 'scale', 'svc__kernel': 'rbf'}
+Best parameters for dtree found: {'criterion': 'entropy'}
+fold3
+Best parameters for SVC found: {'svc__C': 1, 'svc__gamma': 'scale', 'svc__kernel': 'rbf'}
+Best parameters for dtree found: {'criterion': 'log_loss'}
+fold4
+Best parameters for SVC found: {'svc__C': 1, 'svc__gamma': 'scale', 'svc__kernel': 'rbf'}
+Best parameters for dtree found: {'criterion': 'entropy'}
+fold5
+Best parameters for SVC found: {'svc__C': 1, 'svc__gamma': 'scale', 'svc__kernel': 'rbf'}
+Best parameters for dtree found: {'criterion': 'gini'}
+fold6
+Best parameters for SVC found: {'svc__C': 1, 'svc__gamma': 'scale', 'svc__kernel': 'rbf'}
+Best parameters for dtree found: {'criterion': 'gini'}
+fold7
+Best parameters for SVC found: {'svc__C': 1, 'svc__gamma': 'scale', 'svc__kernel': 'rbf'}
+Best parameters for dtree found: {'criterion': 'log_loss'}
+fold8
+Best parameters for SVC found: {'svc__C': 1, 'svc__gamma': 'scale', 'svc__kernel': 'rbf'}
+Best parameters for dtree found: {'criterion': 'log_loss'}
+fold9
+Best parameters for SVC found: {'svc__C': 1, 'svc__gamma': 'scale', 'svc__kernel': 'rbf'}
+Best parameters for dtree found: {'criterion': 'log_loss'}
+[array([[0.54306967, 0.93881604, 0.84244386, 0.74094285, 0.54007818],
+       [0.60457184, 0.89862741, 0.82700562, 0.75159962, 0.51888247],
+       [0.63534107, 0.9598152 , 0.88077262, 0.79757814, 0.65847059],
+       [0.68900581, 0.89429875, 0.84428667, 0.79165228, 0.58056275],
+       [0.56433237, 0.93508933, 0.84477801, 0.74971085, 0.55137407]])]

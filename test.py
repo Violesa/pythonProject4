@@ -18,6 +18,8 @@
 from scipy import stats
 from sklearn import svm
 from sklearn import tree
+from sklearn.metrics import classification_report
+from sklearn.model_selection import GridSearchCV
 from sklearn.linear_model import Lasso,LassoCV,LassoLarsCV
 from sklearn.linear_model import LogisticRegression
 from sklearn.feature_selection import SelectFromModel
@@ -27,11 +29,15 @@ import os
 import seaborn as sns
 import numpy as np
 import math
+from sklearn.pipeline import Pipeline
 import random
 from sklearn.preprocessing import StandardScaler
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.preprocessing import RobustScaler
 from sklearn.ensemble import RandomForestClassifier
+from sklearn.tree import DecisionTreeClassifier
+
+
 def fLoadDataMatrix(filename):
     with open(filename, 'r') as fr:
         lines = fr.readlines()
@@ -245,12 +251,13 @@ def evaluate(predict, origin):
         result[4] = x1 / math.sqrt(x2)
     return result
 
-def cross_validation_one_round(t_data,t_class,group_N,group_P,conf):
+def cross_validation_one_round(t_data,t_class,group_N,group_P,conf,fw):
     k = int(conf['K_cross'])
     k_KNN = int(conf['K_KNN'])
     result = np.zeros((5, 5))
 
     for cnt in range(k):
+        print("fold"+str(cnt),file=fw)
         test_group = group_N[cnt] + group_P[cnt]
         train_group = []
         for i in range(k):
@@ -281,19 +288,34 @@ def cross_validation_one_round(t_data,t_class,group_N,group_P,conf):
         #######################
         #        SVC          #
         #######################
-        model_SVC = svm.SVC(kernel='linear')    # slow
-        #ConvergenceWarning: Solver terminated early (max_iter=1000).  Consider pre-processing your data with StandardScaler or MinMaxScaler.
-        #warnings.warn(
-        model_SVC.fit(train_x, train_y)
-        predict_SVC = model_SVC.predict(test_x)
-
+        pipeline = Pipeline([
+            ('scaler', StandardScaler()),
+            ('svc', svm.SVC())
+        ])
+        param_grid = {
+            'svc__C': [0.1, 1, 3,  5 , 10, 100],
+            'svc__kernel': ['linear', 'poly', 'rbf', 'sigmoid'],
+            'svc__gamma': ['scale', 'auto']
+        }
+        grid_search = GridSearchCV(pipeline, param_grid, cv=5, n_jobs=-1)
+        grid_search.fit(train_x, train_y)
+        print("Best parameters for SVC found:", grid_search.best_params_,file=fw)
+        best_SVC_model = grid_search.best_estimator_
+        predict_SVC = best_SVC_model.predict(test_x)
         #######################
         #        dtree        #
         #######################
-        model_dtree = tree.DecisionTreeClassifier(criterion='entropy')
-        model_dtree.fit(train_x, train_y)
-        predict_dtree = model_dtree.predict(test_x)
-
+        param_grid = {
+            'criterion': ['gini', 'entropy', 'log_loss'],
+            'max_depth': [None, 5, 10, 15],
+            'min_samples_split': [2, 5, 10]
+        }
+        model_dtree = DecisionTreeClassifier()
+        grid_search = GridSearchCV(model_dtree, param_grid, cv=5, n_jobs=-1)
+        grid_search.fit(train_x, train_y)
+        print("Best parameters for dtree found:", grid_search.best_params_,file=fw)
+        best_model = grid_search.best_estimator_
+        predict_dtree = best_model.predict(test_x)
         #######################
         #        Lasso        #
         #######################
@@ -310,7 +332,8 @@ def cross_validation_one_round(t_data,t_class,group_N,group_P,conf):
         ev5 = evaluate(predict_Lasso, test_y)
         result += np.asarray([ev1, ev2, ev3, ev4, ev5])
     return  result / k
-def cross_validation(sorted_indices,t_class,t_matrix,conf,class_N,class_P):
+def cross_validation(sorted_indices,t_class,t_matrix,conf,class_N,class_P,):
+    fw = open(os.path.join(conf["Output_dir"], conf["cross_statistic"]), "w")
     k=int(conf['K_cross'])
     random.shuffle(class_N)
     random.shuffle(class_P)
@@ -325,15 +348,14 @@ def cross_validation(sorted_indices,t_class,t_matrix,conf,class_N,class_P):
         test_indices = [int(conf[f"subplot{i + 1}"]) for i in range(3)]
         for i in range(3):
             t_data = t_matrix[:,sorted_indices[:test_indices[i]]]
-            result.append( cross_validation_one_round(t_data,t_class,group_N, group_P,conf) )
+            result.append( cross_validation_one_round(t_data,t_class,group_N, group_P,conf,fw) )
         t_data = t_matrix[:,sorted_indices[-5:]]
-        result.append(cross_validation_one_round(t_data, t_class, group_N, group_P, conf))
+        result.append(cross_validation_one_round(t_data, t_class, group_N, group_P, conf,fw))
     else:
         t_data = t_matrix[:, sorted_indices]
-        result.append(cross_validation_one_round(t_data, t_class, group_N, group_P, conf))
+        result.append(cross_validation_one_round(t_data, t_class, group_N, group_P, conf,fw))
 
 
-    fw = open(os.path.join(conf["Output_dir"], conf["cross_statistic"]), "w")
     print(result,file=fw)
     fw.close()
     return  result
@@ -478,7 +500,7 @@ def perform_RFI(t_sample, t_class, t_feature, t_matrix,conf,class_N, class_P):
 
     print_histograms(result, conf)
 
-    print_heat_map(t_class, t_matrix, sorted_indices_RFI, t_feature, conf)
+    #print_heat_map(t_class, t_matrix, sorted_indices_RFI, t_feature, conf)
 try:
     conf = lord_conf('/home/violesa/PycharmProjects/pythonProject4/pbc.conf')
 except FileNotFoundError:
