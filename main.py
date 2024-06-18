@@ -1,20 +1,3 @@
-# usage of config:
-# Input:  file_path for input
-# Output_dir: file_path for output
-# Max_feature: k     for top k features
-# top_k_features: file_path for top_k_features output
-# Choose_top_k : method for ranking features
-# Dot_plot: file_path for top_k_features output
-# subplot1: k         for the subplot1's x axis ranking k
-# subplot2: k         for the subplot2's x axis ranking k
-# subplot3: k         for the subplot3's x axis ranking k
-# subplot4: k         for the subplot4's x axis ranking k
-# K_cross:  k         for the k groups for cross_validation
-# K_KNN:    k         for the k vote for KNN
-# cross_statistic: file_path for cross_validatipn data output
-# histogram : file_path  for cross_validatipn  histogram output
-# heat_map: file_path  for heat_map  output
-# top_k_heat_map:  k  for the top k feature of heat_map
 from scipy import stats
 from sklearn import svm
 from sklearn import tree
@@ -56,7 +39,7 @@ def fLoadDataMatrix(filename):
     ClassLabels = [int(label) for label in tClass]
     return tSample, ClassLabels, tFeature, tMatrix
 
-def lord_conf(filename):
+def load_conf(filename):
     config= {}
     with open(filename, encoding='utf-8') as fn:
         for line in fn:
@@ -325,12 +308,14 @@ def cross_validation_one_round(t_data,t_class,group_N,group_P,conf,fw):
         predictarr = model_Lasso.predict(test_x)
         for i in range(len(test_y)):
             predict_Lasso[i] = (predictarr[i] > 0.5)
+
         ev1 = evaluate(predict_KNN, test_y)
         ev2 = evaluate(predict_NB, test_y)
         ev3 = evaluate(predict_SVC, test_y)
         ev4 = evaluate(predict_dtree, test_y)
         ev5 = evaluate(predict_Lasso, test_y)
         result += np.asarray([ev1, ev2, ev3, ev4, ev5])
+
     return  result / k
 def cross_validation(sorted_indices,t_class,t_matrix,conf,class_N,class_P,):
     fw = open(os.path.join(conf["Output_dir"], conf["cross_statistic"]), "w")
@@ -500,9 +485,19 @@ def perform_RFI(t_sample, t_class, t_feature, t_matrix,conf,class_N, class_P):
 
     print_histograms(result, conf)
 
-    #print_heat_map(t_class, t_matrix, sorted_indices_RFI, t_feature, conf)
+    print_heat_map(t_class, t_matrix, sorted_indices_RFI, t_feature, conf)
+
+
+
+
+
+####################################
+#              main                #
+####################################
+
+
 try:
-    conf = lord_conf('/home/violesa/PycharmProjects/pythonProject4/pbc.conf')
+    conf = load_conf('/home/violesa/PycharmProjects/pythonProject4/pbc.conf')
 except FileNotFoundError:
     print("Error: Configuration file not found.")
     exit(1)
@@ -526,4 +521,3 @@ elif Choose_top_k == 'lasso':
 elif Choose_top_k == 'RFI':
     perform_RFI(t_sample, t_class, t_feature, t_matrix,conf,class_N, class_P)
 else: print("wrong Choose_top_k arg")
-#超参数调优： 对于 SVM、Decision Tree 和 LassoLarsCV 等模型，可以尝试调整超参数，以提高模型性能。

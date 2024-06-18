@@ -1,0 +1,35 @@
+fold0
+Best parameters for SVC found: {'svc__C': 3, 'svc__gamma': 'scale', 'svc__kernel': 'rbf'}
+Best parameters for dtree found: {'criterion': 'entropy', 'max_depth': 5, 'min_samples_split': 5}
+fold1
+Best parameters for SVC found: {'svc__C': 3, 'svc__gamma': 'scale', 'svc__kernel': 'rbf'}
+Best parameters for dtree found: {'criterion': 'entropy', 'max_depth': 5, 'min_samples_split': 2}
+fold2
+Best parameters for SVC found: {'svc__C': 3, 'svc__gamma': 'scale', 'svc__kernel': 'rbf'}
+Best parameters for dtree found: {'criterion': 'gini', 'max_depth': 5, 'min_samples_split': 10}
+fold3
+Best parameters for SVC found: {'svc__C': 1, 'svc__gamma': 'scale', 'svc__kernel': 'rbf'}
+Best parameters for dtree found: {'criterion': 'entropy', 'max_depth': 5, 'min_samples_split': 5}
+fold4
+Best parameters for SVC found: {'svc__C': 1, 'svc__gamma': 'scale', 'svc__kernel': 'rbf'}
+Best parameters for dtree found: {'criterion': 'entropy', 'max_depth': 5, 'min_samples_split': 5}
+fold5
+Best parameters for SVC found: {'svc__C': 1, 'svc__gamma': 'scale', 'svc__kernel': 'rbf'}
+Best parameters for dtree found: {'criterion': 'gini', 'max_depth': 5, 'min_samples_split': 10}
+fold6
+Best parameters for SVC found: {'svc__C': 1, 'svc__gamma': 'scale', 'svc__kernel': 'rbf'}
+Best parameters for dtree found: {'criterion': 'gini', 'max_depth': 5, 'min_samples_split': 10}
+fold7
+Best parameters for SVC found: {'svc__C': 1, 'svc__gamma': 'scale', 'svc__kernel': 'rbf'}
+Best parameters for dtree found: {'criterion': 'log_loss', 'max_depth': 5, 'min_samples_split': 5}
+fold8
+Best parameters for SVC found: {'svc__C': 1, 'svc__gamma': 'scale', 'svc__kernel': 'rbf'}
+Best parameters for dtree found: {'criterion': 'gini', 'max_depth': 5, 'min_samples_split': 2}
+fold9
+Best parameters for SVC found: {'svc__C': 1, 'svc__gamma': 'scale', 'svc__kernel': 'rbf'}
+Best parameters for dtree found: {'criterion': 'gini', 'max_depth': 5, 'min_samples_split': 10}
+[array([[0.59876633, 0.93944099, 0.85648654, 0.76910366, 0.58822033],
+       [0.58526851, 0.89926386, 0.8227978 , 0.74226618, 0.50346005],
+       [0.66411466, 0.95798252, 0.88641733, 0.81104859, 0.67709334],
+       [0.67579826, 0.95488843, 0.88688671, 0.81534334, 0.67895221],
+       [0.5642598 , 0.9338586 , 0.84385438, 0.7490592 , 0.55049757]])]
